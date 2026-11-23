@@ -1,0 +1,6 @@
+{
+  "name": "Disha Career Portal",
+  "description": "Reliable information on careers, courses, colleges, entrance exams and scholarships, in one place for students.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

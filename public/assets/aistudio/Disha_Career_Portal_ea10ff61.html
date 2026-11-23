@@ -1,0 +1,627 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Disha Career Portal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout: sticky top bar, dark-navy hero with a path illustration, then alternating content bands; one hash-routed view at a time. */
+:root{
+  --bg:#f6f7fc; --surface:#ffffff; --surface2:#eef1fb; --fg:#141a38; --muted:#576088; --line:#dfe3f3;
+  --blue:#2c58e8; --blue-ink:#ffffff; --blue-soft:#e6edff; --purple:#7a4ee0; --purple-soft:#eee9fd;
+  --hero:#13205c; --hero-fg:#ffffff; --hero-muted:#c3cbf0; --ok:#12805c; --err:#b42318; --shadow:0 6px 24px rgba(30,45,120,.08);
+  --f-head:'Manrope',system-ui,sans-serif; --f-body:'Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1124; --surface:#171b36; --surface2:#1d2244; --fg:#eceffd; --muted:#a6aed3; --line:#2b3158;
+  --blue:#86a0ff; --blue-ink:#0e1124; --blue-soft:#202a58; --purple:#b093ff; --purple-soft:#2a2352;
+  --hero:#0a0f35; --hero-fg:#ffffff; --hero-muted:#b5bee9; --ok:#4ccf9e; --err:#ff8a7a; --shadow:0 6px 24px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1124; --surface:#171b36; --surface2:#1d2244; --fg:#eceffd; --muted:#a6aed3; --line:#2b3158;
+  --blue:#86a0ff; --blue-ink:#0e1124; --blue-soft:#202a58; --purple:#b093ff; --purple-soft:#2a2352;
+  --hero:#0a0f35; --hero-fg:#ffffff; --hero-muted:#b5bee9; --ok:#4ccf9e; --err:#ff8a7a; --shadow:0 6px 24px rgba(0,0,0,.35); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body);min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+h1,h2,h3,h4{font-family:var(--f-head);line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--blue)}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:3px solid var(--purple);outline-offset:2px;border-radius:6px}
+button{font:inherit;cursor:pointer}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg)}
+.brand b{font:800 20px var(--f-head);letter-spacing:-.01em;display:block;line-height:1}
+.brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.menu-btn{background:none;border:1px solid var(--line);color:var(--fg);border-radius:10px;width:44px;height:44px;display:grid;place-items:center}
+nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-left,0px)) 16px;flex-direction:column;gap:2px;max-height:calc(100vh - 80px);overflow-y:auto}
+nav.open{display:flex}
+nav a.lnk{padding:11px 10px;border-radius:8px;text-decoration:none;color:var(--fg);font-weight:500}
+nav a.lnk:hover{background:var(--surface2)}
+nav a.lnk.on{color:var(--blue);background:var(--blue-soft)}
+.auth{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+@media (min-width:1240px){
+  .menu-btn{display:none}
+  nav{display:flex;position:static;flex-direction:row;align-items:center;border:0;padding:0;gap:2px;max-height:none;overflow:visible}
+  nav a.lnk{padding:8px 9px;font-size:13.5px;white-space:nowrap}
+  .auth{margin:0 0 0 10px;flex-wrap:nowrap}
+}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:11px 18px;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:transform .15s,box-shadow .15s,background .15s;min-height:44px}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--blue);color:var(--blue-ink)}
+.btn.primary:hover{box-shadow:0 6px 16px rgba(44,88,232,.35)}
+.btn.ghost{background:transparent;color:var(--blue);border-color:var(--blue)}
+.btn.plain{background:var(--surface2);color:var(--fg)}
+.btn.sm{padding:7px 14px;min-height:38px;font-size:14px}
+.btn.onhero{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)}
+.btn.purple{background:var(--purple);color:#fff}
+/* hero */
+.hero{background:var(--hero);color:var(--hero-fg);overflow:hidden}
+.hero .wrap{display:grid;gap:28px;grid-template-columns:1fr;align-items:center;padding-block:44px}
+@media (min-width:900px){.hero .wrap{grid-template-columns:1.1fr .9fr;padding-block:64px}}
+.hero h1{font-size:clamp(32px,5.2vw,54px);font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:#b9a2ff}
+.hero p.lead{color:var(--hero-muted);font-size:17px;margin-top:16px;max-width:54ch}
+.search{display:flex;gap:8px;margin-top:24px;background:#fff;border-radius:14px;padding:6px;max-width:560px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;padding:10px 12px;color:#141a38;outline:none}
+.search input::placeholder{color:#6b7399}
+.search .btn{background:#2c58e8;color:#fff}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.quick{margin-top:18px;color:var(--hero-muted);font-size:13px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.quick button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:4px 12px;font-size:13px}
+.quick button:hover{background:rgba(255,255,255,.2)}
+.ill{width:100%;height:auto;max-width:480px;justify-self:center}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero .wrap>*{animation:rise .6s ease both}
+.hero .wrap>*:nth-child(2){animation-delay:.12s}
+@media (prefers-reduced-motion:reduce){.hero .wrap>*{animation:none}.btn,.card{transition:none}}
+/* sections */
+.band{padding-block:52px}
+.band.alt{background:var(--surface2)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head h2{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.01em}
+.sec-head p{color:var(--muted);margin-top:6px;max-width:60ch}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card h3{font-size:18px}
+.card p.sub{color:var(--muted);font-size:14px}
+.tile{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:800 17px var(--f-head);background:var(--blue-soft);color:var(--blue)}
+.tile.p{background:var(--purple-soft);color:var(--purple)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--purple-soft);color:var(--purple);white-space:nowrap}
+.pill.b{background:var(--blue-soft);color:var(--blue)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.meta{display:grid;gap:4px;font-size:13.5px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+details.more{border-top:1px solid var(--line);padding-top:8px;font-size:13.5px}
+details.more summary{cursor:pointer;color:var(--blue);font-weight:600;list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more[open] summary{margin-bottom:6px}
+.steps{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));counter-reset:s}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;position:relative}
+.step .n{width:34px;height:34px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font:700 15px var(--f-head);margin-bottom:12px}
+.step p{color:var(--muted);font-size:14px;margin-top:6px}
+.story q{quotes:none;font-size:15px}
+.story .who{display:flex;gap:10px;align-items:center;margin-top:auto}
+.who .av{width:38px;height:38px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font-weight:700}
+.who small{color:var(--muted);display:block}
+.note{font-size:12.5px;color:var(--muted)}
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.faq summary{font-weight:600;cursor:pointer}
+.faq details p{color:var(--muted);margin-top:8px}
+/* list pages */
+.page-head{background:var(--hero);color:#fff;padding-block:36px}
+.page-head h1{font-size:clamp(26px,4vw,38px)}
+.page-head p{color:var(--hero-muted);margin-top:8px;max-width:62ch}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.tools input[type=search]{flex:1 1 240px;min-width:0}
+.chipbtn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 14px;font-size:13.5px}
+.chipbtn[aria-pressed=true]{background:var(--blue);color:var(--blue-ink);border-color:var(--blue)}
+.empty{padding:30px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:14px}
+/* forms */
+.formcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);max-width:560px;margin-inline:auto}
+.formcard.wide{max-width:none;margin:0}
+.formcard h1,.formcard h2{font-size:26px;margin-bottom:6px}
+.field{display:grid;gap:6px;margin-top:14px}
+.field label,.field .lab{font-weight:600;font-size:14px}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=search],select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;min-height:44px}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+.two{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.msg{margin-top:14px;padding:10px 12px;border-radius:10px;font-size:14px}
+.msg.err{background:color-mix(in srgb,var(--err) 12%,transparent);color:var(--err)}
+.msg.ok{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok)}
+.formcard .alt{margin-top:16px;font-size:14px;color:var(--muted)}
+.authwrap{padding-block:40px}
+.profile{display:grid;gap:20px;grid-template-columns:1fr}
+@media (min-width:900px){.profile{grid-template-columns:300px 1fr}}
+.avatar{width:72px;height:72px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font:800 28px var(--f-head)}
+/* assistant */
+.chat{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:900px){.chat{grid-template-columns:1fr 300px}}
+.log{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;height:440px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.bub{max-width:88%;padding:10px 14px;border-radius:14px;font-size:14.5px;overflow-wrap:anywhere}
+.bub.bot{background:var(--surface2);align-self:flex-start;border-bottom-left-radius:4px}
+.bub.me{background:var(--blue);color:var(--blue-ink);align-self:flex-end;border-bottom-right-radius:4px}
+.bub ul{margin:6px 0 0;padding-left:18px}
+.chatform{display:flex;gap:8px;margin-top:12px}
+.chatform input{flex:1;min-width:0}
+/* footer */
+footer{background:var(--hero);color:var(--hero-muted);padding-block:40px;margin-top:0}
+footer .cols{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+footer h4{color:#fff;font-size:15px;margin-bottom:10px}
+footer a{color:var(--hero-muted);text-decoration:none;display:block;padding:3px 0}
+footer a:hover{color:#fff}
+footer .legal{border-top:1px solid rgba(255,255,255,.15);margin-top:28px;padding-top:16px;font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:40;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.two-col{display:grid;gap:20px;grid-template-columns:1fr}
+@media (min-width:860px){.two-col{grid-template-columns:1fr 1fr}}
+</style>
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#home" aria-label="Disha home">
+      <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="var(--blue)"/><path d="M11 27c4-1 5-6 9-8s6-6 9-8" stroke="var(--blue-ink)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="29" cy="11" r="3.4" fill="#c9b6ff"/><circle cx="11" cy="27" r="2.6" fill="var(--blue-ink)"/></svg>
+      <span><b>Disha</b><small>Career Guidance &amp; Information Portal</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav id="nav" aria-label="Main">
+      <a class="lnk" href="#home" data-r="home">Home</a>
+      <a class="lnk" href="#careers" data-r="careers">Explore Careers</a>
+      <a class="lnk" href="#courses" data-r="courses">Courses</a>
+      <a class="lnk" href="#colleges" data-r="colleges">Colleges</a>
+      <a class="lnk" href="#scholarships" data-r="scholarships">Scholarships</a>
+      <a class="lnk" href="#exams" data-r="exams">Entrance Exams</a>
+      <a class="lnk" href="#assistant" data-r="assistant">AI Career Assistant</a>
+      <a class="lnk" href="#about" data-r="about">About Us</a>
+      <a class="lnk" href="#contact" data-r="contact">Contact Us</a>
+      <div class="auth" id="authBox"></div>
+    </nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Disha</h4>
+        <p style="font-size:14px">Reliable information on careers, courses, colleges, entrance exams and scholarships, in one place for students.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="#careers">Careers</a><a href="#courses">Courses</a><a href="#colleges">Colleges</a><a href="#scholarships">Scholarships</a><a href="#exams">Entrance exams</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p style="font-size:14px">Email: hello@disha.example<br>Phone: +91 00000 00000<br>Mon to Sat, 10 am to 6 pm IST</p>
+      </div>
+      <div>
+        <h4>Follow us</h4>
+        <p style="font-size:14px">Instagram · LinkedIn · YouTube · X<br><span style="font-size:12.5px">(social handles to be added)</span></p>
+      </div>
+    </div>
+    <div class="legal">© 2026 Disha Career Portal. Always confirm dates, fees and eligibility on the official website of the exam, college or scholarship before applying.</div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+/* ---------- tiny helpers ---------- */
+var mem={};
+var store={
+  get:function(k,d){try{var v=localStorage.getItem(k);if(v!==null)return JSON.parse(v)}catch(e){} return (k in mem)?mem[k]:d},
+  set:function(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove('show')},2600)}
+function initials(n){return String(n||'?').trim().split(/\s+/).slice(0,2).map(function(w){return w[0]}).join('').toUpperCase()}
+function pw(){return 'sha'}
+
+/* ---------- data ---------- */
+var INTERESTS=['Technology & Coding','Medicine & Health','Business & Finance','Design & Creativity','Law & Public Service','Science & Research','Teaching','Engineering','Defence & Services'];
+var QUALS=['Class 10 (Secondary)','Class 12: Science (PCM)','Class 12: Science (PCB)','Class 12: Commerce','Class 12: Arts / Humanities','Diploma',"Bachelor's degree","Master's degree"];
+
+var EXAMS=[
+ {id:'jee-main',name:'JEE Main',full:'Joint Entrance Examination (Main)',for:'B.E./B.Tech, B.Arch at NITs, IIITs and other institutes',body:'National Testing Agency (NTA)',win:'Sessions usually in January and April',elig:'Class 12 with Physics, Chemistry and Mathematics'},
+ {id:'neet',name:'NEET UG',full:'National Eligibility cum Entrance Test (UG)',for:'MBBS, BDS, AYUSH and allied courses',body:'National Testing Agency (NTA)',win:'Usually May',elig:'Class 12 with Physics, Chemistry and Biology'},
+ {id:'cuet',name:'CUET UG',full:'Common University Entrance Test (UG)',for:'Undergraduate programmes in central and many other universities',body:'National Testing Agency (NTA)',win:'Usually May to June',elig:'Class 12 pass or appearing; subjects depend on the course'},
+ {id:'kcet',name:'KCET',full:'Karnataka Common Entrance Test',for:'Engineering, pharmacy, agriculture and other seats in Karnataka',body:'Karnataka Examinations Authority (KEA)',win:'Usually April',elig:'Class 12 (2nd PUC) with the required subjects; Karnataka domicile rules apply'},
+ {id:'clat',name:'CLAT',full:'Common Law Admission Test',for:'5-year integrated LLB and LLM at National Law Universities',body:'Consortium of National Law Universities',win:'Usually December',elig:'Class 12 pass for UG; LLB degree for PG'},
+ {id:'cat',name:'CAT',full:'Common Admission Test',for:'MBA/PGDM at IIMs and many other business schools',body:'Conducted by the IIMs on rotation',win:'Usually November',elig:'Bachelor\'s degree with the minimum marks required by the institute'},
+ {id:'gate',name:'GATE',full:'Graduate Aptitude Test in Engineering',for:'M.Tech, PhD and some public sector recruitment',body:'IITs and IISc on rotation',win:'Usually February',elig:'Final-year or completed bachelor\'s degree in engineering, science or related fields'},
+ {id:'nda',name:'NDA',full:'National Defence Academy Examination',for:'Entry to the Army, Navy and Air Force wings after Class 12',body:'Union Public Service Commission (UPSC)',win:'Twice a year, usually April and September',elig:'Unmarried candidates in the notified age range; Class 12 (PCM for Air Force and Navy)'},
+ {id:'uceed',name:'UCEED',full:'Undergraduate Common Entrance Examination for Design',for:'B.Des at IITs and some other design schools',body:'IIT Bombay',win:'Usually January',elig:'Class 12 in any stream, within the notified age limit'},
+ {id:'upsc',name:'UPSC CSE',full:'Civil Services Examination',for:'IAS, IPS, IFS and other central services',body:'Union Public Service Commission (UPSC)',win:'Prelims usually May to June',elig:'Bachelor\'s degree in any discipline and within the notified age limits'}
+];
+function exam(id){for(var i=0;i<EXAMS.length;i++)if(EXAMS[i].id===id)return EXAMS[i];return null}
+
+var CAREERS=[
+ {name:'Software Engineer',field:'Technology',blurb:'Design, build and maintain the apps, websites and systems people use every day.',path:'Class 12 (PCM) → B.E./B.Tech in CS or BCA → optional M.Tech/MCA',skills:['Programming','Problem solving','Teamwork'],exams:['jee-main','kcet','cuet'],interests:['Technology & Coding','Engineering'],kw:['coding','program','software','computer','developer','website','tech']},
+ {name:'Data Scientist',field:'Technology',blurb:'Turn raw data into predictions and decisions using statistics and machine learning.',path:'B.Sc/B.Tech in CS, Maths or Statistics → data science courses → M.Sc/M.Tech optional',skills:['Statistics','Python','Storytelling'],exams:['cuet','jee-main','gate'],interests:['Technology & Coding','Science & Research','Business & Finance'],kw:['data','statistic','analytics','maths','math','machine','learning']},
+ {name:'Doctor (MBBS)',field:'Healthcare',blurb:'Diagnose and treat patients, then specialise through postgraduate medicine.',path:'Class 12 (PCB) → NEET UG → MBBS with internship → MD/MS',skills:['Empathy','Biology','Stamina'],exams:['neet'],interests:['Medicine & Health','Science & Research'],kw:['doctor','medicine','mbbs','hospital','patient','biology','health']},
+ {name:'Pharmacist',field:'Healthcare',blurb:'Work on medicines in hospitals, drug companies, labs and regulation.',path:'Class 12 (PCB/PCM) → B.Pharm → M.Pharm or Pharm.D',skills:['Chemistry','Accuracy','Communication'],exams:['kcet'],interests:['Medicine & Health','Science & Research'],kw:['pharma','pharmacy','drug','chemistry','medicines']},
+ {name:'Chartered Accountant',field:'Business',blurb:'Handle accounts, audit, tax and financial planning for people and companies.',path:'Class 12 (any stream, commerce helps) → CA Foundation → Intermediate → Final with articleship',skills:['Numeracy','Ethics','Persistence'],exams:[],interests:['Business & Finance'],kw:['account','audit','tax','finance','commerce','money','bank']},
+ {name:'Business Manager',field:'Business',blurb:'Lead teams, products and strategy in companies, startups and consulting.',path:'Any bachelor\'s degree or BBA → CAT or other MBA tests → MBA/PGDM',skills:['Leadership','Analysis','Communication'],exams:['cat','cuet'],interests:['Business & Finance'],kw:['business','manage','mba','startup','marketing','entrepreneur','sales']},
+ {name:'UI/UX Designer',field:'Creative',blurb:'Shape how apps and products look and feel, grounded in how people use them.',path:'Class 12 (any stream) → B.Des or any degree plus portfolio → design courses',skills:['Visual sense','Empathy','Prototyping'],exams:['uceed'],interests:['Design & Creativity','Technology & Coding'],kw:['design','draw','creative','art','ux','sketch','animation']},
+ {name:'Lawyer',field:'Law & Government',blurb:'Advise clients, argue cases and work in courts, firms or companies.',path:'Class 12 (any stream) → CLAT → 5-year integrated LLB → enrol with the Bar Council',skills:['Reading','Argument','Research'],exams:['clat'],interests:['Law & Public Service'],kw:['law','lawyer','court','legal','advocate','judge','debate']},
+ {name:'Civil Services Officer',field:'Law & Government',blurb:'Serve in the IAS, IPS, IFS and other services that run public administration.',path:'Any bachelor\'s degree → UPSC CSE (prelims, mains, interview) → training',skills:['Reasoning','Writing','Patience'],exams:['upsc'],interests:['Law & Public Service'],kw:['ias','ips','civil','upsc','government','administration','public']},
+ {name:'Teacher / Professor',field:'Education',blurb:'Teach in schools or colleges and shape the next generation of students.',path:'Bachelor\'s degree → B.Ed (schools) or Master\'s plus NET (colleges) → teaching eligibility tests',skills:['Patience','Subject depth','Communication'],exams:[],interests:['Teaching'],kw:['teach','teacher','professor','school','lecturer','education']},
+ {name:'Civil / Mechanical Engineer',field:'Engineering',blurb:'Plan and build roads, buildings, machines and the systems around them.',path:'Class 12 (PCM) → JEE Main or state CET → B.E./B.Tech → GATE or jobs',skills:['Physics','Drawing','Site sense'],exams:['jee-main','kcet','gate'],interests:['Engineering'],kw:['engineer','mechanical','civil','machine','construction','electrical','building']},
+ {name:'Research Scientist',field:'Science',blurb:'Investigate open questions in labs, universities and research institutes.',path:'B.Sc → M.Sc → PhD, with research fellowships such as CSIR-NET or GATE',skills:['Curiosity','Experiment design','Writing'],exams:['gate','cuet'],interests:['Science & Research'],kw:['research','scientist','physics','lab','space','isro','science']},
+ {name:'Defence Officer',field:'Law & Government',blurb:'Lead in the Army, Navy or Air Force after training at the national academies.',path:'Class 12 → NDA (or CDS after graduation) → SSB interview → training',skills:['Fitness','Leadership','Discipline'],exams:['nda'],interests:['Defence & Services'],kw:['army','navy','air force','defence','nda','soldier','military','pilot']}
+];
+var FIELDS=['All','Technology','Healthcare','Business','Creative','Law & Government','Education','Engineering','Science'];
+
+var COURSES=[
+ {name:'B.E. / B.Tech',field:'Engineering',dur:'4 years',elig:'Class 12 with PCM',exams:['jee-main','kcet'],blurb:'Core engineering degree across computer science, mechanical, civil, electrical and more.'},
+ {name:'MBBS',field:'Medicine',dur:'5.5 years including internship',elig:'Class 12 with PCB',exams:['neet'],blurb:'The undergraduate medical degree required to practise as a doctor.'},
+ {name:'BCA',field:'Computing',dur:'3 years',elig:'Class 12, any stream (maths often preferred)',exams:['cuet'],blurb:'Programming, databases and software development with a computing focus.'},
+ {name:'B.Sc Data Science',field:'Science',dur:'3 years',elig:'Class 12 with Mathematics',exams:['cuet'],blurb:'Statistics, programming and machine learning from the first year.'},
+ {name:'B.Com',field:'Commerce',dur:'3 years',elig:'Class 12, commerce preferred',exams:['cuet'],blurb:'Accounting, taxation and economics; a base for CA, CS and MBA.'},
+ {name:'BBA',field:'Management',dur:'3 years',elig:'Class 12, any stream',exams:['cuet'],blurb:'Business basics, marketing and operations; a direct route into management.'},
+ {name:'B.Des',field:'Design',dur:'4 years',elig:'Class 12, any stream',exams:['uceed'],blurb:'Product, communication and interaction design with a portfolio-based approach.'},
+ {name:'BA LLB (Hons)',field:'Law',dur:'5 years integrated',elig:'Class 12, any stream',exams:['clat'],blurb:'Arts and law combined, taught at National Law Universities and others.'},
+ {name:'B.Pharm',field:'Medicine',dur:'4 years',elig:'Class 12 with PCB or PCM',exams:['kcet'],blurb:'Pharmaceutical sciences, drug formulation and healthcare practice.'},
+ {name:'B.Ed',field:'Education',dur:'2 years after graduation',elig:'Bachelor\'s degree',exams:[],blurb:'Professional teaching degree for school-level careers.'}
+];
+var CFIELDS=['All','Engineering','Medicine','Computing','Science','Commerce','Management','Design','Law','Education'];
+
+var COLLEGES=[
+ {name:'IIT Bombay',city:'Mumbai, Maharashtra',field:'Engineering',type:'Institute of National Importance',via:'JEE Advanced (B.Tech), UCEED (B.Des)',blurb:'Engineering, science and design programmes with a strong research culture.'},
+ {name:'IIT Madras',city:'Chennai, Tamil Nadu',field:'Engineering',type:'Institute of National Importance',via:'JEE Advanced',blurb:'Engineering and data science programmes, including an online BS degree.'},
+ {name:'NIT Karnataka, Surathkal',city:'Surathkal, Karnataka',field:'Engineering',type:'National Institute of Technology',via:'JEE Main through JoSAA',blurb:'One of the leading NITs, known for engineering and its coastal campus.'},
+ {name:'Indian Institute of Science (IISc)',city:'Bengaluru, Karnataka',field:'Science',type:'Institute of Eminence',via:'Varies by programme; check the current admission route',blurb:'Research-first institute for science and engineering at all levels.'},
+ {name:'AIIMS New Delhi',city:'New Delhi, Delhi',field:'Medicine',type:'Institute of National Importance',via:'NEET UG',blurb:'Premier medical college, hospital and research institute.'},
+ {name:'NLSIU',city:'Bengaluru, Karnataka',field:'Law',type:'National Law University',via:'CLAT',blurb:'India\'s first National Law University, offering integrated and postgraduate law degrees.'},
+ {name:'IIM Bangalore',city:'Bengaluru, Karnataka',field:'Management',type:'Indian Institute of Management',via:'CAT, followed by interviews',blurb:'Management education from the MBA to doctoral programmes.'},
+ {name:'National Institute of Design',city:'Ahmedabad, Gujarat',field:'Design',type:'Institute of National Importance',via:'NID DAT',blurb:'Design education in product, communication, textile and more.'},
+ {name:'University of Delhi',city:'Delhi',field:'Multi-discipline',type:'Central University',via:'CUET UG',blurb:'Wide range of arts, commerce and science undergraduate programmes.'}
+];
+var KFIELDS=['All','Engineering','Science','Medicine','Law','Management','Design','Multi-discipline'];
+
+var SCHOLARS=[
+ {name:'National Scholarship Portal (NSP)',by:'Government of India',who:'Students across levels; one portal for many central and state schemes',blurb:'Create one account, check which schemes you qualify for and apply online.',link:'https://scholarships.gov.in'},
+ {name:'INSPIRE Scholarship (SHE)',by:'Department of Science and Technology',who:'High scorers choosing basic and natural sciences for degree study',blurb:'Supports students who pursue B.Sc, integrated M.Sc and similar science programmes.'},
+ {name:'Central Sector Scholarship for College and University Students',by:'Ministry of Education',who:'Students above the board-exam percentile cut-off with a family income limit',blurb:'Merit-based support for regular degree students in recognised institutions.'},
+ {name:'Post-Matric Scholarships',by:'Central and state social justice departments',who:'Category-based eligibility (for example SC, ST, OBC, minorities) with income limits',blurb:'Helps with fees and maintenance after Class 10 for eligible students.'},
+ {name:'AICTE Pragati Scholarship',by:'AICTE',who:'Girl students admitted to AICTE-approved degree or diploma programmes',blurb:'Supports women in technical education; check each year\'s notice for details.'},
+ {name:'State scholarship portals',by:'Your state government',who:'Residents of the state, with rules that change by scheme',blurb:'Many states run their own portals (Karnataka has one for post-matric schemes). Search your state\'s official portal.'}
+];
+
+var STORIES=[
+ {n:'Ananya R.',r:'B.Des student',q:'I was torn between engineering and art. Seeing design as a real career with a clear entrance exam made the decision easy.'},
+ {n:'Imran S.',r:'B.Tech, Computer Science',q:'The exam calendar kept me on schedule. I knew which tests mattered for my state and prepared only for those.'},
+ {n:'Meera K.',r:'First-year MBBS',q:'My family wasn\'t sure about the cost. Finding scholarship options early helped us plan with confidence.'}
+];
+var FAQS=[
+ {q:'When should I start planning my career?',a:'Class 9 or 10 is a good time to explore interests. Your stream choice after Class 10 narrows options, so it helps to know what each stream leads to.'},
+ {q:'Can I change my stream after Class 10 or 12?',a:'Often yes. Many degrees accept students from more than one stream, and bridge courses exist. Check the eligibility of the exact course you want.'},
+ {q:'Do I need coaching for entrance exams?',a:'Not always. It depends on the exam and how you learn. Official syllabi, past papers and a steady plan matter more than any one method.'},
+ {q:'How reliable is the information here?',a:'It is a starting guide. Exam dates, fees and eligibility change every year, so always confirm on the official website before you apply.'},
+ {q:'How does the AI Career Assistant work?',a:'It matches the interests and subjects you describe against the careers, exams and scholarships listed on this site. It is rule-based guidance, not a replacement for a counsellor.'},
+ {q:'Where is my account data kept?',a:'In this demo, your account and profile are stored only in your own browser, and no server receives them. Use a practice password, not one you use elsewhere.'}
+];
+
+/* ---------- auth (browser-only demo) ---------- */
+function users(){return store.get('cgp_users',{})}
+function me(){var e=store.get('cgp_session',null);if(!e)return null;return users()[e]||null}
+function newSalt(){var a=new Uint8Array(8);try{crypto.getRandomValues(a)}catch(e){for(var i=0;i<8;i++)a[i]=Math.floor(Math.random()*256)}return Array.prototype.map.call(a,function(b){return ('0'+b.toString(16)).slice(-2)}).join('')}
+function hashPw(p,salt){
+  try{return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+':'+p)).then(function(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return ('0'+b.toString(16)).slice(-2)}).join('')})}
+  catch(e){var h=5381,s=salt+p;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('x'+h)}
+}
+var EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/* ---------- views ---------- */
+var filters={careers:{q:'',cat:'All'},courses:{q:'',cat:'All'},colleges:{q:'',cat:'All'}};
+var flash='';
+
+function examChips(ids){return ids.map(function(id){var e=exam(id);return e?'<span class="pill b">'+esc(e.name)+'</span>':''}).join('')}
+function careerCard(c){
+  return '<article class="card"><div class="row"><div class="tile">'+esc(c.name[0])+'</div><span class="pill">'+esc(c.field)+'</span></div>'+
+  '<h3>'+esc(c.name)+'</h3><p class="sub">'+esc(c.blurb)+'</p>'+
+  '<details class="more"><summary>See the path</summary><div class="meta"><div><b>Path:</b> '+esc(c.path)+'</div><div><b>Skills:</b> '+esc(c.skills.join(', '))+'</div>'+(c.exams.length?'<div class="chips" style="margin-top:4px">'+examChips(c.exams)+'</div>':'<div>No single entrance exam; see the path above.</div>')+'</div></details></article>';
+}
+function courseCard(c){
+  return '<article class="card"><div class="row"><div class="tile p">'+esc(c.name[0])+'</div><span class="pill">'+esc(c.field)+'</span></div><h3>'+esc(c.name)+'</h3><p class="sub">'+esc(c.blurb)+'</p>'+
+  '<div class="meta"><div><b>Duration:</b> '+esc(c.dur)+'</div><div><b>Eligibility:</b> '+esc(c.elig)+'</div></div>'+(c.exams.length?'<div class="chips">'+examChips(c.exams)+'</div>':'')+'</article>';
+}
+function collegeCard(c){
+  return '<article class="card"><div class="row"><div class="tile">'+esc(c.name[0])+'</div><span class="pill">'+esc(c.field)+'</span></div><h3>'+esc(c.name)+'</h3><p class="sub">'+esc(c.blurb)+'</p>'+
+  '<div class="meta"><div><b>Location:</b> '+esc(c.city)+'</div><div><b>Type:</b> '+esc(c.type)+'</div><div><b>Admission:</b> '+esc(c.via)+'</div></div></article>';
+}
+function scholarCard(s){
+  return '<article class="card"><div class="tile p">₹</div><h3>'+esc(s.name)+'</h3><p class="sub">'+esc(s.blurb)+'</p><div class="meta"><div><b>Offered by:</b> '+esc(s.by)+'</div><div><b>Who can apply:</b> '+esc(s.who)+'</div></div>'+(s.link?'<a class="btn ghost sm" href="'+esc(s.link)+'" target="_blank" rel="noopener">Official site</a>':'')+'</article>';
+}
+function examCard(e){
+  return '<article class="card"><div class="row"><div class="tile">'+esc(e.name[0])+'</div><span class="pill b">'+esc(e.win)+'</span></div><h3>'+esc(e.name)+'</h3><p class="sub">'+esc(e.full)+'</p>'+
+  '<div class="meta"><div><b>For:</b> '+esc(e.for)+'</div><div><b>Eligibility:</b> '+esc(e.elig)+'</div><div><b>Conducted by:</b> '+esc(e.body)+'</div></div></article>';
+}
+function head(h,p,link){return '<div class="sec-head"><div><h2>'+h+'</h2>'+(p?'<p>'+p+'</p>':'')+'</div>'+(link?'<a class="btn ghost sm" href="'+link[0]+'">'+link[1]+'</a>':'')+'</div>'}
+function pageHead(h,p){return '<section class="page-head"><div class="wrap"><h1>'+h+'</h1><p>'+p+'</p></div></section>'}
+
+var views={};
+
+views.home=function(){
+  var u=me();
+  return '<section class="hero"><div class="wrap"><div>'+
+   '<h1>Discover Your Future, <em>Shape Your Career</em></h1>'+
+   '<p class="lead">Choosing a stream, course or college shapes the next ten years. Disha puts careers, courses, colleges, entrance exams and scholarships side by side so you can decide with facts, not guesswork.</p>'+
+   '<form class="search" id="heroSearch" role="search"><input id="heroQ" type="search" placeholder="Search careers or courses, e.g. data, MBBS, law" aria-label="Search careers and courses"><button class="btn" type="submit">Search</button></form>'+
+   '<div class="hero-cta"><a class="btn purple" href="'+(u?'#profile':'#register')+'">Get Started</a><a class="btn onhero" href="#careers">Explore Careers</a></div>'+
+   '<div class="quick">Popular: <button type="button" data-q="software">Software</button><button type="button" data-q="doctor">Doctor</button><button type="button" data-q="law">Law</button><button type="button" data-q="design">Design</button></div>'+
+  '</div>'+
+  '<svg class="ill" viewBox="0 0 480 400" role="img" aria-label="A winding path from self-discovery, to choosing a course, to picking a career and reaching a goal">'+
+   '<circle cx="270" cy="210" r="170" fill="#7a4ee0" opacity=".28"/><circle cx="270" cy="210" r="118" fill="#2c58e8" opacity=".28"/>'+
+   '<path d="M60 340C170 340 110 250 220 240S340 190 300 120S390 70 420 62" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13" opacity=".9"/>'+
+   '<circle cx="60" cy="340" r="15" fill="#fff"/><circle cx="60" cy="340" r="6" fill="#2c58e8"/><text x="84" y="345" fill="#fff" font-size="14" font-weight="600" font-family="Inter,sans-serif">Know yourself</text>'+
+   '<circle cx="220" cy="240" r="15" fill="#fff"/><circle cx="220" cy="240" r="6" fill="#7a4ee0"/><text x="244" y="262" fill="#fff" font-size="14" font-weight="600" font-family="Inter,sans-serif">Choose a course</text>'+
+   '<circle cx="300" cy="120" r="15" fill="#fff"/><circle cx="300" cy="120" r="6" fill="#2c58e8"/><text x="278" y="126" text-anchor="end" fill="#fff" font-size="14" font-weight="600" font-family="Inter,sans-serif">Pick a career</text>'+
+   '<path d="M420 62V22" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M420 22l38 12l-38 12z" fill="#c9b6ff"/><circle cx="420" cy="62" r="7" fill="#fff"/><text x="420" y="92" text-anchor="middle" fill="#fff" font-size="13" font-weight="600" font-family="Inter,sans-serif">Your goal</text>'+
+   '<polygon points="100,170 148,150 196,170 148,190" fill="#fff"/><path d="M122 180v20c0 10 52 10 52 0v-20" fill="#c9b6ff"/><path d="M190 172v26" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="190" cy="202" r="4" fill="#fff"/>'+
+  '</svg></div></section>'+
+
+  '<section class="band"><div class="wrap">'+head('Popular career options','Roles students ask about most, with the route to get there.',['#careers','All careers'])+'<div class="grid">'+CAREERS.slice(0,6).map(careerCard).join('')+'</div></div></section>'+
+  '<section class="band alt"><div class="wrap">'+head('Trending courses','Undergraduate programmes with clear eligibility and entrance routes.',['#courses','All courses'])+'<div class="grid">'+[0,1,3,6].map(function(i){return courseCard(COURSES[i])}).join('')+'</div></div></section>'+
+  '<section class="band"><div class="wrap">'+head('Top colleges','Well-known institutions and how students get in.',['#colleges','All colleges'])+'<div class="grid">'+COLLEGES.slice(0,4).map(collegeCard).join('')+'</div></div></section>'+
+  '<section class="band alt"><div class="wrap">'+head('Latest scholarships','Funding schemes to check before you finalise your plan.',['#scholarships','All scholarships'])+'<div class="grid">'+SCHOLARS.slice(0,3).map(scholarCard).join('')+'</div></div></section>'+
+  '<section class="band"><div class="wrap">'+head('Upcoming entrance examinations','Usual windows shown below. Dates change every year, so confirm on the official site.',['#exams','All exams'])+'<div class="grid">'+['clat','jee-main','uceed','gate'].map(function(id){return examCard(exam(id))}).join('')+'</div></div></section>'+
+  '<section class="band alt"><div class="wrap">'+head('How it works')+
+   '<div class="steps"><div class="step"><div class="n">1</div><h3>Create your profile</h3><p>Tell us your class, qualification and interests. It takes about two minutes.</p></div>'+
+   '<div class="step"><div class="n">2</div><h3>Explore options</h3><p>Browse careers, courses and colleges, or ask the AI Career Assistant.</p></div>'+
+   '<div class="step"><div class="n">3</div><h3>Check the route</h3><p>See which entrance exams, eligibility and scholarships match each option.</p></div>'+
+   '<div class="step"><div class="n">4</div><h3>Plan and apply</h3><p>Note the exam windows, prepare, and confirm details on official sites.</p></div></div></div></section>'+
+  '<section class="band"><div class="wrap">'+head('Student success stories','Illustrative examples of how students use the portal.')+'<div class="grid">'+STORIES.map(function(s){return '<article class="card story"><q>'+esc(s.q)+'</q><div class="who"><div class="av">'+esc(initials(s.n))+'</div><div><b>'+esc(s.n)+'</b><small>'+esc(s.r)+'</small></div></div></article>'}).join('')+'</div><p class="note" style="margin-top:12px">These are sample profiles written for this demo, not real testimonials.</p></div></section>'+
+  '<section class="band alt"><div class="wrap">'+head('Frequently asked questions')+'<div class="faq">'+FAQS.map(function(f){return '<details><summary>'+esc(f.q)+'</summary><p>'+esc(f.a)+'</p></details>'}).join('')+'</div></div></section>';
+};
+
+function listView(key,h,p,cats,total){
+  var f=filters[key];
+  return pageHead(h,p)+'<section class="band"><div class="wrap"><div class="tools"><input type="search" id="lq" placeholder="Search" aria-label="Search" value="'+esc(f.q)+'"><div class="chips" id="cats">'+cats.map(function(c){return '<button type="button" class="chipbtn" data-c="'+esc(c)+'" aria-pressed="'+(f.cat===c)+'">'+esc(c)+'</button>'}).join('')+'</div></div><div class="grid" id="lg"></div></div></section>';
+}
+function match(it,f,fields){
+  if(f.cat!=='All'&&it.field!==f.cat)return false;
+  if(!f.q)return true;
+  var q=f.q.toLowerCase();
+  return fields.some(function(k){var v=it[k];if(Array.isArray(v))v=v.join(' ');return String(v||'').toLowerCase().indexOf(q)>-1});
+}
+var LISTS={
+ careers:{items:CAREERS,card:careerCard,cats:FIELDS,keys:['name','field','blurb','path','skills','kw'],h:'Explore careers',p:'Find a career, see what it involves and which route leads there.'},
+ courses:{items:COURSES,card:courseCard,cats:CFIELDS,keys:['name','field','blurb','elig'],h:'Courses',p:'Compare duration, eligibility and the entrance exams behind each course.'},
+ colleges:{items:COLLEGES,card:collegeCard,cats:KFIELDS,keys:['name','city','field','type','blurb'],h:'Colleges',p:'Notable institutions across India and how admission works at each.'}
+};
+['careers','courses','colleges'].forEach(function(k){
+  views[k]=function(){return listView(k,LISTS[k].h,LISTS[k].p,LISTS[k].cats)};
+});
+function bindList(k){
+  var L=LISTS[k],f=filters[k];
+  function draw(){
+    var r=L.items.filter(function(it){return match(it,f,L.keys)});
+    $('#lg').innerHTML=r.length?r.map(L.card).join(''):'<div class="empty" style="grid-column:1/-1">No matches for that search. Try a shorter word or choose "All".</div>';
+  }
+  $('#lq').addEventListener('input',function(e){f.q=e.target.value.trim();draw()});
+  $('#cats').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;f.cat=b.getAttribute('data-c');
+    $$('#cats .chipbtn').forEach(function(x){x.setAttribute('aria-pressed',x===b)});draw();
+  });
+  draw();
+}
+
+views.scholarships=function(){return pageHead('Scholarships','Funding options for school-leavers and degree students. Eligibility and last dates change, so read each official notice.')+'<section class="band"><div class="wrap"><div class="grid">'+SCHOLARS.map(scholarCard).join('')+'</div></div></section>'};
+views.exams=function(){return pageHead('Entrance exams','The tests that open the door to popular courses, with who can sit them and when they usually happen.')+'<section class="band"><div class="wrap"><p class="note" style="margin-bottom:16px">Timings show the usual window only. Dates, pattern and eligibility are set each year by the conducting body.</p><div class="grid">'+EXAMS.map(examCard).join('')+'</div></div></section>'};
+
+views.assistant=function(){
+  return pageHead('AI Career Assistant','Describe your interests, subjects or goals. The assistant suggests careers, exams and scholarships from the portal.')+
+  '<section class="band"><div class="wrap"><div class="chat"><div><div class="log" id="log" aria-live="polite"></div>'+
+  '<form class="chatform" id="chatForm"><input type="text" id="chatIn" placeholder="e.g. I like maths and coding. What should I do after 12th?" aria-label="Your question" autocomplete="off"><button class="btn primary" type="submit">Send</button></form>'+
+  '<p class="note" style="margin-top:8px">Rule-based guidance from the data on this site. It does not replace a career counsellor.</p></div>'+
+  '<aside class="card"><h3>Try asking</h3><div class="chips" id="tryq" style="flex-direction:column;align-items:stretch">'+
+   ['I like biology and helping people','I enjoy drawing and technology','Tell me about NEET','Scholarships for girls in engineering','I want to join the army','I am good at maths and coding'].map(function(q){return '<button type="button" class="chipbtn" style="text-align:left;border-radius:12px">'+esc(q)+'</button>'}).join('')+'</div></aside></div></div></section>';
+};
+var chatLog=[{r:'bot',h:'Hi, I\'m the Disha assistant. Tell me what you enjoy studying or the kind of work you picture yourself doing, and I\'ll suggest careers and the exams that lead to them.'}];
+function reply(msg){
+  var m=msg.toLowerCase(),tokens=m.match(/[a-z]+/g)||[];
+  function hit(kw){return kw.indexOf(' ')>-1?m.indexOf(kw)>-1:tokens.some(function(t){return t===kw||(kw.length>=4&&t.indexOf(kw)===0)})}
+  var ex=EXAMS.filter(function(e){return tokens.indexOf(e.id.replace('-main',''))>-1||tokens.indexOf(e.id)>-1||(e.id==='upsc'&&tokens.indexOf('ias')>-1)});
+  if(ex.length){var e=ex[0];return '<b>'+esc(e.name)+'</b> ('+esc(e.full)+')<ul><li>For: '+esc(e.for)+'</li><li>Eligibility: '+esc(e.elig)+'</li><li>Conducted by: '+esc(e.body)+'</li><li>Usual window: '+esc(e.win)+'</li></ul>Confirm current dates on the official website. See <a href="#exams">all exams</a>.'}
+  if(hit('scholarship')||hit('fees')||hit('funding')){
+    var s=SCHOLARS.filter(function(x){return (hit('girl')||hit('women'))?/Pragati|National|State/.test(x.name):true}).slice(0,4);
+    return 'Here are schemes worth checking:<ul>'+s.map(function(x){return '<li><b>'+esc(x.name)+'</b>: '+esc(x.who)+'</li>'}).join('')+'</ul>Open <a href="#scholarships">Scholarships</a> for the full list.';
+  }
+  var scored=CAREERS.map(function(c){return {c:c,s:c.kw.filter(hit).length+c.interests.filter(function(i){return m.indexOf(i.toLowerCase().split(' ')[0])>-1}).length}}).filter(function(x){return x.s>0}).sort(function(a,b){return b.s-a.s}).slice(0,3);
+  if(scored.length){
+    return 'From what you described, these are worth exploring:<ul>'+scored.map(function(x){var c=x.c;return '<li><b>'+esc(c.name)+'</b>: '+esc(c.path)+(c.exams.length?' (exams: '+esc(c.exams.map(function(id){return exam(id).name}).join(', '))+')':'')+'</li>'}).join('')+'</ul>See more on <a href="#careers">Explore Careers</a>, or ask about any exam by name.';
+  }
+  if(hit('12th')||hit('class 12')||hit('after 10')||hit('stream')){
+    return 'A simple way to choose: Science (PCM) leads to engineering and technology, Science (PCB) to medicine and life sciences, Commerce to finance and management, and Arts/Humanities to law, civil services, design and teaching. Tell me which subjects you enjoy most and I\'ll narrow it down.';
+  }
+  return 'I couldn\'t match that to a career yet. Try mentioning a subject (maths, biology, art), an activity (coding, debating, drawing) or a goal (doctor, lawyer, army), or ask about an exam like NEET, JEE Main or CLAT.';
+}
+function bindAssistant(){
+  var log=$('#log');
+  function paint(){log.innerHTML=chatLog.map(function(m){return '<div class="bub '+(m.r==='me'?'me':'bot')+'">'+(m.r==='me'?esc(m.h):m.h)+'</div>'}).join('');log.scrollTop=log.scrollHeight}
+  function ask(t){t=t.trim();if(!t)return;chatLog.push({r:'me',h:t});paint();setTimeout(function(){chatLog.push({r:'bot',h:reply(t)});paint()},350)}
+  $('#chatForm').addEventListener('submit',function(e){e.preventDefault();var i=$('#chatIn');ask(i.value);i.value=''});
+  $('#tryq').addEventListener('click',function(e){var b=e.target.closest('button');if(b)ask(b.textContent)});
+  paint();
+}
+
+views.about=function(){
+  return pageHead('About Us','Our goal is simple: every student should be able to see the whole map before choosing a road.')+
+  '<section class="band"><div class="wrap"><div class="two-col"><div><h2 style="font-size:26px">What we do</h2><p style="margin-top:10px;color:var(--muted)">Career choices are often made with half the facts: a relative\'s advice, a friend\'s plan, a coaching brochure. Disha gathers the essentials in one place. You can see what a career involves, which courses lead to it, which colleges teach it, which exam opens the door and which scholarship may help pay for it.</p><p style="margin-top:12px;color:var(--muted)">We keep the language plain, name the official bodies behind every exam, and remind you to confirm dates and fees at the source.</p></div>'+
+  '<div class="grid" style="grid-template-columns:1fr 1fr">'+[['Clear','No jargon, no hype'],['Current','Check-the-source reminders'],['Inclusive','Scholarships for every background'],['Practical','Routes with real exams']].map(function(x){return '<div class="card"><h3>'+x[0]+'</h3><p class="sub">'+x[1]+'</p></div>'}).join('')+'</div></div></div></section>';
+};
+
+views.contact=function(){
+  return pageHead('Contact us','Questions, corrections or ideas? Send us a note.')+
+  '<section class="band"><div class="wrap"><div class="two-col"><form class="formcard wide" id="contactForm" novalidate><h2>Send a message</h2>'+
+  '<div class="field"><label for="cn">Your name</label><input type="text" id="cn" autocomplete="name"></div>'+
+  '<div class="field"><label for="ce">Email</label><input type="email" id="ce" autocomplete="email"></div>'+
+  '<div class="field"><label for="cm">Message</label><textarea id="cm"></textarea></div>'+
+  '<div id="cmsg" role="alert"></div><button class="btn primary" type="submit" style="margin-top:16px">Send message</button>'+
+  '<p class="note" style="margin-top:10px">This demo has no mail server, so messages stay in this browser only.</p></form>'+
+  '<div class="card"><h3>Reach us</h3><div class="meta"><div><b>Email:</b> hello@disha.example</div><div><b>Phone:</b> +91 00000 00000</div><div><b>Hours:</b> Mon to Sat, 10 am to 6 pm IST</div></div><p class="note">Contact details are placeholders. Replace them with your own before launch.</p></div></div></div></section>';
+};
+
+function interestBoxes(sel){
+  sel=sel||[];
+  return '<div class="chips" id="ints" role="group" aria-label="Academic interests">'+INTERESTS.map(function(i,n){return '<label class="chipbtn" style="display:inline-flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" value="'+esc(i)+'" id="int'+n+'"'+(sel.indexOf(i)>-1?' checked':'')+'> '+esc(i)+'</label>'}).join('')+'</div>';
+}
+function selected(){return $$('#ints input:checked').map(function(x){return x.value})}
+function qualSelect(id,v){return '<select id="'+id+'"><option value="">Choose one</option>'+QUALS.map(function(q){return '<option'+(q===v?' selected':'')+'>'+esc(q)+'</option>'}).join('')+'</select>'}
+
+views.register=function(){
+  return '<section class="authwrap"><div class="wrap"><form class="formcard" id="regForm" novalidate><h1>Create your student account</h1><p class="note">Your profile helps the portal suggest careers that fit you.</p>'+
+  '<div class="field"><label for="rn">Full name</label><input type="text" id="rn" autocomplete="name"></div>'+
+  '<div class="field"><label for="re">Email</label><input type="email" id="re" autocomplete="email"></div>'+
+  '<div class="two"><div class="field"><label for="rp">Password</label><input type="password" id="rp" autocomplete="new-password" placeholder="At least 8 characters"></div><div class="field"><label for="rc">Confirm password</label><input type="password" id="rc" autocomplete="new-password"></div></div>'+
+  '<div class="two"><div class="field"><label for="ra">Age</label><input type="number" id="ra" min="10" max="60"></div><div class="field"><label for="rq">Education qualification</label>'+qualSelect('rq','')+'</div></div>'+
+  '<div class="field"><label for="rcur">Current class or degree</label><input type="text" id="rcur" placeholder="e.g. Class 11 Science, or 2nd year B.Com"></div>'+
+  '<div class="field"><span class="lab">Academic interests</span>'+interestBoxes([])+'</div>'+
+  '<div id="rmsg" role="alert"></div><button class="btn primary" type="submit" style="margin-top:18px;width:100%">Create account</button>'+
+  '<p class="alt">Already registered? <a href="#login">Log in</a></p><p class="note" style="margin-top:10px">Demo note: accounts are stored only in this browser. Use a practice password.</p></form></div></section>';
+};
+views.login=function(){
+  var f=flash;flash='';
+  return '<section class="authwrap"><div class="wrap"><form class="formcard" id="logForm" novalidate><h1>Welcome back</h1><p class="note">Log in to see your profile and personalised suggestions.</p>'+
+  (f?'<div class="msg ok" role="status">'+esc(f)+'</div>':'')+
+  '<div class="field"><label for="le">Email</label><input type="email" id="le" autocomplete="email"></div>'+
+  '<div class="field"><label for="lp">Password</label><input type="password" id="lp" autocomplete="current-password"></div>'+
+  '<div id="lmsg" role="alert"></div><button class="btn primary" type="submit" style="margin-top:18px;width:100%">Log in</button>'+
+  '<p class="alt"><a href="#forgot-password">Forgot password?</a></p><p class="alt" style="margin-top:6px">New here? <a href="#register">Create an account</a></p></form></div></section>';
+};
+views['forgot-password']=function(){
+  return '<section class="authwrap"><div class="wrap"><form class="formcard" id="fpForm" novalidate><h1>Reset your password</h1><p class="note">This demo has no email service, so you can set a new password directly after confirming the account email.</p>'+
+  '<div class="field"><label for="fe">Account email</label><input type="email" id="fe" autocomplete="email"></div>'+
+  '<div id="fstep" hidden><div class="field"><label for="fp">New password</label><input type="password" id="fp" autocomplete="new-password" placeholder="At least 8 characters"></div></div>'+
+  '<div id="fmsg" role="alert"></div><button class="btn primary" type="submit" id="fbtn" style="margin-top:18px;width:100%">Find account</button><p class="alt"><a href="#login">Back to log in</a></p></form></div></section>';
+};
+views.profile=function(){
+  var u=me();var p=u.profile;
+  var recs=CAREERS.filter(function(c){return c.interests.some(function(i){return p.interests.indexOf(i)>-1})}).slice(0,4);
+  return pageHead('Your profile','Keep your details current so suggestions stay relevant.')+
+  '<section class="band"><div class="wrap"><div class="profile"><aside class="card"><div class="avatar">'+esc(initials(u.name))+'</div><h3 style="margin-top:6px">'+esc(u.name)+'</h3><p class="sub">'+esc(u.email)+'</p>'+
+  '<div class="meta"><div><b>Qualification:</b> '+esc(p.qual||'Not set')+'</div><div><b>Currently:</b> '+esc(p.cur||'Not set')+'</div><div><b>Age:</b> '+esc(p.age||'Not set')+'</div><div><b>Joined:</b> '+esc(new Date(u.created).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}))+'</div></div>'+
+  '<button class="btn plain" id="logoutBtn" type="button">Log out</button></aside>'+
+  '<div style="display:grid;gap:16px;min-width:0"><form class="formcard wide" id="profForm" novalidate><h2>Edit profile</h2>'+
+  '<div class="two"><div class="field"><label for="pn">Full name</label><input type="text" id="pn" value="'+esc(u.name)+'"></div><div class="field"><label for="pe">Email</label><input type="email" id="pe" value="'+esc(u.email)+'" disabled></div></div>'+
+  '<div class="two"><div class="field"><label for="pa">Age</label><input type="number" id="pa" min="10" max="60" value="'+esc(p.age)+'"></div><div class="field"><label for="pq">Education qualification</label>'+qualSelect('pq',p.qual)+'</div></div>'+
+  '<div class="field"><label for="pcur">Current class or degree</label><input type="text" id="pcur" value="'+esc(p.cur)+'"></div>'+
+  '<div class="field"><span class="lab">Academic interests</span>'+interestBoxes(p.interests)+'</div>'+
+  '<div id="pmsg" role="alert"></div><button class="btn primary" type="submit" style="margin-top:18px">Save changes</button></form>'+
+  '<div class="formcard wide"><h2>Suggested for you</h2>'+(recs.length?'<div class="grid" style="margin-top:14px">'+recs.map(careerCard).join('')+'</div>':'<p class="note" style="margin-top:8px">Pick a few interests above and save to see matching careers here.</p>')+'</div></div></div></div></section>';
+};
+
+/* ---------- binders ---------- */
+var binders={};
+binders.home=function(){
+  function go(q){
+    q=(q||'').trim().toLowerCase();filters.careers={q:q,cat:'All'};filters.courses={q:q,cat:'All'};
+    var inC=CAREERS.some(function(c){return match(c,filters.careers,LISTS.careers.keys)});
+    var inK=COURSES.some(function(c){return match(c,filters.courses,LISTS.courses.keys)});
+    location.hash=(inC||!inK)?'#careers':'#courses';
+  }
+  $('#heroSearch').addEventListener('submit',function(e){e.preventDefault();go($('#heroQ').value)});
+  $$('.quick button').forEach(function(b){b.addEventListener('click',function(){go(b.getAttribute('data-q'))})});
+};
+['careers','courses','colleges'].forEach(function(k){binders[k]=function(){bindList(k)}});
+binders.assistant=bindAssistant;
+binders.contact=function(){
+  $('#contactForm').addEventListener('submit',function(e){
+    e.preventDefault();var n=$('#cn').value.trim(),m=$('#ce').value.trim(),t=$('#cm').value.trim(),box=$('#cmsg');
+    if(!n||!EMAIL.test(m)||t.length<5){box.innerHTML='<div class="msg err">Please enter your name, a valid email and a short message.</div>';return}
+    var all=store.get('cgp_messages',[]);all.push({n:n,e:m,t:t,at:Date.now()});store.set('cgp_messages',all);
+    box.innerHTML='<div class="msg ok">Thanks, '+esc(n)+'. Your message is saved in this browser.</div>';e.target.reset();
+  });
+};
+binders.register=function(){
+  $('#regForm').addEventListener('submit',function(e){
+    e.preventDefault();var box=$('#rmsg');
+    var name=$('#rn').value.trim(),email=$('#re').value.trim().toLowerCase(),p1=$('#rp').value,p2=$('#rc').value,age=$('#ra').value,qual=$('#rq').value,cur=$('#rcur').value.trim();
+    function err(t){box.innerHTML='<div class="msg err">'+esc(t)+'</div>'}
+    if(name.length<2)return err('Enter your full name.');
+    if(!EMAIL.test(email))return err('Enter a valid email address.');
+    if(p1.length<8)return err('Use a password with at least 8 characters.');
+    if(p1!==p2)return err('The two passwords do not match.');
+    if(!age||age<10||age>60)return err('Enter an age between 10 and 60.');
+    if(!qual)return err('Choose your education qualification.');
+    if(!cur)return err('Enter your current class or degree.');
+    var all=users();if(all[email])return err('An account with this email already exists. Try logging in.');
+    var salt=newSalt();
+    hashPw(p1,salt).then(function(h){
+      all[email]={name:name,email:email,salt:salt,hash:h,created:Date.now(),profile:{age:age,qual:qual,cur:cur,interests:selected()}};
+      store.set('cgp_users',all);store.set('cgp_session',email);toast('Account created. Welcome, '+name.split(' ')[0]+'!');location.hash='#profile';
+    });
+  });
+};
+binders.login=function(){
+  $('#logForm').addEventListener('submit',function(e){
+    e.preventDefault();var email=$('#le').value.trim().toLowerCase(),p=$('#lp').value,box=$('#lmsg'),u=users()[email];
+    function bad(){box.innerHTML='<div class="msg err">Email or password is incorrect.</div>'}
+    if(!u)return bad();
+    hashPw(p,u.salt).then(function(h){if(h!==u.hash)return bad();store.set('cgp_session',email);toast('Logged in');location.hash='#profile'});
+  });
+};
+binders['forgot-password']=function(){
+  var step=1,found=null;
+  $('#fpForm').addEventListener('submit',function(e){
+    e.preventDefault();var box=$('#fmsg');
+    if(step===1){
+      var em=$('#fe').value.trim().toLowerCase();found=users()[em];
+      if(!found){box.innerHTML='<div class="msg err">No account found for that email.</div>';return}
+      step=2;$('#fe').disabled=true;$('#fstep').hidden=false;$('#fbtn').textContent='Set new password';box.innerHTML='<div class="msg ok">Account found. Choose a new password.</div>';$('#fp').focus();
+    }else{
+      var np=$('#fp').value;if(np.length<8){box.innerHTML='<div class="msg err">Use a password with at least 8 characters.</div>';return}
+      var all=users(),salt=newSalt();
+      hashPw(np,salt).then(function(h){all[found.email].salt=salt;all[found.email].hash=h;store.set('cgp_users',all);flash='Password updated. Please log in.';location.hash='#login'});
+    }
+  });
+};
+binders.profile=function(){
+  $('#logoutBtn').addEventListener('click',function(){store.set('cgp_session',null);toast('You have been logged out');location.hash='#home';render()});
+  $('#profForm').addEventListener('submit',function(e){
+    e.preventDefault();var box=$('#pmsg'),name=$('#pn').value.trim(),age=$('#pa').value,qual=$('#pq').value,cur=$('#pcur').value.trim();
+    if(name.length<2||!age||age<10||age>60||!qual||!cur){box.innerHTML='<div class="msg err">Please complete name, a valid age, qualification and current class or degree.</div>';return}
+    var all=users(),em=store.get('cgp_session',null);
+    all[em].name=name;all[em].profile={age:age,qual:qual,cur:cur,interests:selected()};store.set('cgp_users',all);toast('Profile saved');render();
+  });
+};
+
+/* ---------- router ---------- */
+var app=$('#app');
+function updateHeader(name){
+  var u=me();
+  $('#authBox').innerHTML=u?'<a class="btn ghost sm" href="#profile">My profile</a><button class="btn plain sm" id="navOut" type="button">Log out</button>':'<a class="btn ghost sm" href="#login">Login</a><a class="btn primary sm" href="#register">Register</a>';
+  var o=$('#navOut');if(o)o.addEventListener('click',function(){store.set('cgp_session',null);toast('You have been logged out');if(location.hash==='#profile'){location.hash='#home'}render()});
+  $$('nav a.lnk').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-r')===name)});
+}
+function render(){
+  var name=(location.hash||'#home').slice(1);
+  if(!views[name])name='home';
+  if(name==='profile'&&!me()){name='login';flash='Please log in to see your profile.'}
+  app.innerHTML=views[name]();
+  if(binders[name])binders[name]();
+  updateHeader(name);
+  $('#nav').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
+  window.scrollTo(0,0);
+}
+$('#menuBtn').addEventListener('click',function(){var n=$('#nav'),o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)});
+window.addEventListener('hashchange',render);
+render();
+})();
+</script>
+
+</body></html>
